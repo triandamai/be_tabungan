@@ -36,22 +36,37 @@ class Service {
     type: contenttype;
   }): Promise<IResult> {
     return new Promise((resolve) => {
-      let header;
+      let request;
       switch (param.type) {
         case "json":
-          header = { "Content-Type": "application/json" };
+          request = fetch(this.BASE_URL + param.path, {
+            body: param.body,
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
           break;
         case "form-data":
+          request = fetch(this.BASE_URL + param.path, {
+            body: param.body,
+            method: "POST",
+          });
           break;
         case "urlencoded":
-          header = "application/application/x-www-form-urlencoded";
+          request = fetch(this.BASE_URL + param.path, {
+            body: param.body,
+            method: "POST",
+            headers: {
+              "Content-Type": "application/application/x-www-form-urlencoded",
+            },
+          });
+
           break;
       }
 
-      fetch(this.BASE_URL + param.path, {
-        body: param.body,
-        method: "POST",
-      })
+      request
         .then((res) => res.json())
         .then((result: IResponse) => {
           if (result.code == 200 || result.code == 201)

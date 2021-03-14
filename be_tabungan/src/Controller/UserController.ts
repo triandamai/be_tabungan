@@ -21,6 +21,7 @@ class UserController {
       { field: "password", type: "string", required: true },
       { field: "email", type: "string", required: true },
     ]);
+    console.log(req.body);
     if (!isValid)
       return send.failed(res, {
         code: 400,

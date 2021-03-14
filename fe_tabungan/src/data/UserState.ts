@@ -40,7 +40,9 @@ const UserState = reactive<IUserState>({
 function useUser() {
   function startAuthGoogle() {
     UserState.isProgressing = true;
-    const provider = new firebase.auth.GoogleAuthProvider();
+    const provider = new firebase.auth.GoogleAuthProvider().addScope(
+      "https://www.googleapis.com/auth/user.gender.read"
+    );
     auth.signInWithRedirect(provider);
   }
   async function startLoginBasic() {
@@ -61,6 +63,7 @@ function useUser() {
     const router = useRouter();
     const { user, additionalUserInfo } = await auth.getRedirectResult();
     console.log(user);
+    console.log(additionalUserInfo);
     UserState.isProgressing = false;
     if (user)
       if (additionalUserInfo?.isNewUser) {
@@ -68,6 +71,7 @@ function useUser() {
           JSON.stringify({
             email: user.email,
             name: user.displayName,
+            gender: "laki-laki",
             uid: user.uid,
             password: user.uid,
           })
