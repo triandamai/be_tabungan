@@ -39,10 +39,9 @@ class Service {
       let header;
       switch (param.type) {
         case "json":
-          header = "application/json";
+          header = { "Content-Type": "application/json" };
           break;
         case "form-data":
-          header = "multipart/form-data";
           break;
         case "urlencoded":
           header = "application/application/x-www-form-urlencoded";
@@ -52,9 +51,6 @@ class Service {
       fetch(this.BASE_URL + param.path, {
         body: param.body,
         method: "POST",
-        headers: {
-          "Content-Type": header,
-        },
       })
         .then((res) => res.json())
         .then((result: IResponse) => {

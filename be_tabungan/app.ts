@@ -2,8 +2,9 @@ import express from "express";
 import mongoose from "mongoose";
 import { json, urlencoded } from "body-parser";
 import { router } from "./src/router";
-
+import multer from "multer";
 const app = express();
+
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(router);

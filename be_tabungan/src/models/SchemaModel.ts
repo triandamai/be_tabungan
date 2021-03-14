@@ -4,6 +4,7 @@ interface IUser {
   name: string;
   email: string;
   uid: string;
+  gender: string;
   password: string;
   created: Number;
   updated: Number;
@@ -30,6 +31,7 @@ interface UserDoc extends Document {
   name: string;
   email: string;
   uid: string;
+  gender: string;
   password: string;
   created: Number;
   updated: Number;
@@ -55,6 +57,10 @@ const userSchema = new Schema({
     required: true,
   },
   uid: {
+    type: String,
+    required: true,
+  },
+  gender: {
     type: String,
     required: true,
   },

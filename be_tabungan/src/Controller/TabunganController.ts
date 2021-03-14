@@ -11,7 +11,7 @@ class TabunganController {
    * @returns {code,data,message}
    */
   async deposit(req: Request, res: Response) {
-    const { isValid, invalidMessages } = await validate(req, [
+    const { isValid, invalidMessages } = await validate(req.body, [
       { field: "sender", type: "string", required: true },
       { field: "nominal", type: "string", required: true },
       { field: "description", type: "string", required: true },
@@ -21,6 +21,7 @@ class TabunganController {
     const typeFile = myFile[myFile.length - 1];
     const { url, uploaded, fileName } = await uploader(req, typeFile);
     if (uploaded) {
+      // return send.failed(res, { code: 400, data: req.body, message: "" });
       if (!isValid)
         return send.failed(res, {
           code: 400,
@@ -143,7 +144,7 @@ class TabunganController {
    * @returns
    */
   async getAll(req: Request, res: Response) {
-    const tabungan = await Tabungan.find();
+    const tabungan = await Tabungan.find().sort({ updated: -1 });
     return send.success(res, { code: 200, data: tabungan, message: "Oke" });
   }
   /**

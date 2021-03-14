@@ -43,6 +43,7 @@ class UserController {
       { field: "name", type: "string", required: false },
       { field: "uid", type: "string", required: true },
       { field: "password", type: "string", required: true },
+      { field: "gender", type: "string", required: true },
     ]);
 
     //request not valid
@@ -54,11 +55,12 @@ class UserController {
       });
 
     //prepare saved
-    const { uid, email, name, password } = req.body;
+    const { uid, email, name, password, gender } = req.body;
     const user = User.build({
       uid: uid,
       email: email,
       name: name,
+      gender: gender,
       password: password,
       created: Date.now(),
       updated: Date.now(),

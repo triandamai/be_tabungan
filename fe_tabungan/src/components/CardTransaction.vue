@@ -1,8 +1,15 @@
 <template>
   <div
-    class="flex px-2 py-4 rounded-lg my-2 border-1 bg-green-500 bg-opacity-10 border-green-500"
+    class="flex px-2 py-4 rounded-lg my-2 border-1 bg-opacity-10 bg-green-400 border-green-300"
   >
-    <div class="rounded-full bg-green-500 p-4 bg-opacity-30 text-green-200">
+    <div
+      class="rounded-full p-4 bg-opacity-30"
+      :class="
+        props.tabungan.accepted
+          ? 'bg-green-500 text-green-200'
+          : 'bg-yellow-500 text-yellow-200'
+      "
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -20,7 +27,10 @@
       </svg>
     </div>
     <div class="mx-2">
-      <h1 class="font-medium text-green-600">
+      <h1
+        class="font-medium"
+        :class="props.tabungan.accepted ? ' text-green-600' : 'text-yellow-600'"
+      >
         {{ format(props.tabungan.nominal, "Rp") }}
       </h1>
       <p class="text-white">{{ props.tabungan.description }}</p>

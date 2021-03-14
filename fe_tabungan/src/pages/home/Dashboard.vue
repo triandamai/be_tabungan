@@ -25,7 +25,8 @@
       </h1>
     </div>
     <h1 class="text-white">Transaksi</h1>
-    <div>
+    <no-data v-if="TabunganState.tabungans.length < 1" />
+    <div v-else>
       <card-transaction
         v-for="(item, index) in TabunganState.tabungans"
         :key="index"
@@ -41,10 +42,12 @@ import { useTabungan } from "../../data/TabunganState";
 import { useCurrency } from "../../common/Currency";
 
 import CardTransaction from "../../components/CardTransaction.vue";
+import NoData from "../../components/NoData.vue";
 
 export default defineComponent({
   components: {
     CardTransaction,
+    NoData,
   },
   setup() {
     return {

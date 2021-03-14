@@ -1,4 +1,5 @@
 import { reactive } from "@vue/reactivity";
+import { getCurrentUser } from "../services/FirebaseServices";
 import apiServices from "../services/Services";
 
 interface ITabungan {
@@ -17,23 +18,27 @@ interface ITabungan {
 interface ITabunganState {
   isLoading: boolean;
   tabungans: Array<ITabungan>;
-  formtabungan: ITabungan;
+  formtabungan: IFormTabungan;
   amountDeposit: Number;
 }
-
+interface IFormTabungan {
+  nominal: string;
+  description: string;
+  receipt: any;
+  receiptname: string;
+  filename: string;
+  tabungantype: string;
+}
 const TabunganState = reactive<ITabunganState>({
   isLoading: false,
   tabungans: [],
   formtabungan: {
-    sender: "",
     nominal: "",
-    accepted: "",
-    tabungantype: "",
     description: "",
     receipt: "",
     receiptname: "",
-    updated: 0,
-    created: 0,
+    tabungantype: "",
+    filename: "Pilih",
   },
   amountDeposit: 0,
 });
@@ -56,9 +61,27 @@ function useTabungan() {
     if (success) if (data) TabunganState.amountDeposit = data?.data[0].total;
   }
   async function sendDeposit() {
+    console.log("send");
+    if (
+      !TabunganState.formtabungan.nominal &&
+      !TabunganState.formtabungan.description &&
+      !TabunganState.formtabungan.receipt
+    )
+      return;
+
+    console.log("kosogn");
+    const fromData = new FormData();
+    const user: any = await getCurrentUser();
+    console.log(TabunganState.formtabungan.receipt);
+    fromData.append("sender", user.uid);
+    fromData.append("nominal", TabunganState.formtabungan.nominal);
+    fromData.append("description", TabunganState.formtabungan.description);
+    fromData.append("receipt", TabunganState.formtabungan.receipt);
+    fromData.append("tabungantype", "deposit");
+
     const { success, data } = await apiServices.post({
       path: "/api/deposit/add",
-      body: {},
+      body: fromData,
       type: "form-data",
     });
     if (success) {
@@ -69,6 +92,11 @@ function useTabungan() {
   function sendSpending() {}
   function acceptSpending() {}
 
+  function onImagePicked(e: any) {
+    TabunganState.formtabungan.receipt = e.target.files[0];
+    TabunganState.formtabungan.filename = e.target.files[0].name;
+  }
+
   return {
     getAllDeposit,
     sendDeposit,
@@ -76,6 +104,7 @@ function useTabungan() {
     sendSpending,
     acceptSpending,
     getCountDeposit,
+    onImagePicked,
     TabunganState,
   };
 }

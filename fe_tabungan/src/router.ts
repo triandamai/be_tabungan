@@ -6,8 +6,15 @@ const router = createRouter({
   history,
   routes: [
     {
+      path: "/",
+      redirect: "/main",
+    },
+    {
       path: "/main",
       component: () => import("./pages/Home.vue"),
+      meta: {
+        requireAuth: true,
+      },
       children: [
         {
           path: "",
@@ -29,6 +36,14 @@ const router = createRouter({
           component: () => import("./pages/home/Profil.vue"),
         },
       ],
+    },
+    {
+      path: "/deposit",
+      name: "Deposit",
+      component: () => import("./pages/Deposit.vue"),
+      meta: {
+        requireAuth: true,
+      },
     },
     {
       path: "/login",
