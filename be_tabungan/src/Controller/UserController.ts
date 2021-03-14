@@ -10,24 +10,26 @@ class UserController {
   }
   async getById(req: Request, res: Response) {
     const user = await User.findById(req.params.id);
-    return send.success(res, { code: 200, data: user, message: "" });
+    return send.success(res, { code: 200, data: [user], message: "" });
   }
   async getByUid(req: Request, res: Response) {
-    const user = await User.findOne({ uid: req.params.uid });
+    const user = await User.find({ uid: req.params.uid });
     return send.success(res, { code: 200, data: user, message: "" });
   }
   async login(req: Request, res: Response) {
-    const { isValid, invalidMessages } = await validate(req, [
-      { field: "uid", type: "string", required: true }
+    const { isValid, invalidMessages } = await validate(req.body, [
+      { field: "password", type: "string", required: true },
+      { field: "email", type: "string", required: true },
     ]);
     if (!isValid)
       return send.failed(res, {
         code: 400,
         data: invalidMessages,
-        message: "Gagal"
+        message: "Gagal",
       });
 
-    const get = await User.find({ uid: "" });
+    const { email, password } = req.body;
+    const get = await User.find({ email: email, password: password });
     if (get.length <= 0)
       return send.failed(res, { code: 400, data: {}, message: "Failed" });
 
@@ -36,10 +38,11 @@ class UserController {
 
   async register(req: Request, res: Response) {
     //validate request
-    const { isValid, invalidMessages } = await validate(req, [
+    const { isValid, invalidMessages } = await validate(req.body, [
       { field: "email", type: "string", required: true },
       { field: "name", type: "string", required: false },
-      { field: "uid", type: "string", required: true }
+      { field: "uid", type: "string", required: true },
+      { field: "password", type: "string", required: true },
     ]);
 
     //request not valid
@@ -47,17 +50,18 @@ class UserController {
       return send.failed(res, {
         code: 400,
         data: invalidMessages,
-        message: "Gagal"
+        message: "Gagal",
       });
 
     //prepare saved
-    const { uid, email, name } = req.body;
+    const { uid, email, name, password } = req.body;
     const user = User.build({
       uid: uid,
       email: email,
       name: name,
+      password: password,
       created: Date.now(),
-      updated: Date.now()
+      updated: Date.now(),
     });
     const saved = await user.save();
     if (saved)

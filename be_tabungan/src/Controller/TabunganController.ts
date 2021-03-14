@@ -14,7 +14,7 @@ class TabunganController {
     const { isValid, invalidMessages } = await validate(req, [
       { field: "sender", type: "string", required: true },
       { field: "nominal", type: "string", required: true },
-      { field: "description", type: "string", required: true }
+      { field: "description", type: "string", required: true },
     ]);
 
     const myFile = req.file.originalname.split(".");
@@ -25,7 +25,7 @@ class TabunganController {
         return send.failed(res, {
           code: 400,
           data: invalidMessages,
-          message: ""
+          message: "",
         });
 
       const { sender, nominal, description } = req.body;
@@ -35,9 +35,10 @@ class TabunganController {
         receipt: url,
         receiptname: fileName,
         accepted: "",
+        tabungantype: "deposit",
         description: description,
         created: Date.now(),
-        updated: Date.now()
+        updated: Date.now(),
       });
       const saved = await tabungan.save();
       if (!saved)
@@ -54,13 +55,13 @@ class TabunganController {
   async acceptDeposit(req: Request, res: Response) {
     const { isValid, invalidMessages } = await validate(req, [
       { field: "uid", type: "string", required: true },
-      { field: "id", type: "string", required: true }
+      { field: "id", type: "string", required: true },
     ]);
     if (!isValid)
       return send.failed(res, {
         code: 400,
         data: invalidMessages,
-        message: "failed"
+        message: "failed",
       });
     const { id, uid } = req.body;
     Tabungan.findByIdAndUpdate(
@@ -74,7 +75,7 @@ class TabunganController {
           return send.success(res, {
             code: 200,
             data: result,
-            message: "Berhasil memverifikasi"
+            message: "Berhasil memverifikasi",
           });
       }
     );
@@ -90,7 +91,7 @@ class TabunganController {
       { field: "id", type: "string", required: true },
       { field: "sender", type: "string", required: true },
       { field: "nominal", type: "string", required: true },
-      { field: "description", type: "string", required: true }
+      { field: "description", type: "string", required: true },
     ]);
 
     const myFile = req.file.originalname.split(".");
@@ -101,7 +102,7 @@ class TabunganController {
         return send.failed(res, {
           code: 400,
           data: invalidMessages,
-          message: "Beberapa Field wajib diisi"
+          message: "Beberapa Field wajib diisi",
         });
 
       const { id, sender, nominal, description } = req.body;
@@ -114,7 +115,7 @@ class TabunganController {
           receiptname: fileName,
           description: description,
           created: Date.now(),
-          updated: Date.now()
+          updated: Date.now(),
         },
         { new: true },
         (err, data) => {
@@ -123,7 +124,7 @@ class TabunganController {
           return send.created(res, {
             code: 201,
             data: data,
-            message: "Berhasil"
+            message: "Berhasil",
           });
         }
       );
@@ -131,7 +132,7 @@ class TabunganController {
       return send.failed(res, {
         code: 400,
         data: {},
-        message: "Bukti tidak terupload"
+        message: "Bukti tidak terupload",
       });
     }
   }
@@ -167,10 +168,10 @@ class TabunganController {
         $group: {
           _id: null,
           total: {
-            $sum: "$nominal"
-          }
-        }
-      }
+            $sum: "$nominal",
+          },
+        },
+      },
     ]);
 
     return send.success(res, { code: 200, data: data, message: "" });

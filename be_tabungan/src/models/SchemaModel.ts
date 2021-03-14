@@ -4,12 +4,15 @@ interface IUser {
   name: string;
   email: string;
   uid: string;
+  password: string;
   created: Number;
   updated: Number;
 }
+type tipe = "deposit" | "spending";
 interface ITabungan {
   sender: string;
   nominal: Number;
+  tabungantype: tipe | string;
   accepted: string;
   description: string;
   receipt: string;
@@ -27,12 +30,14 @@ interface UserDoc extends Document {
   name: string;
   email: string;
   uid: string;
+  password: string;
   created: Number;
   updated: Number;
 }
 interface TabunganDoc extends Document {
   sender: string;
   nominal: Number;
+  tabungantype: tipe | string;
   accepted: string;
   description: string;
   receipt: string;
@@ -43,38 +48,46 @@ interface TabunganDoc extends Document {
 const userSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
-    required: true
+    required: true,
   },
   uid: {
     type: String,
-    required: true
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
   },
   created: {
-    type: Number
+    type: Number,
   },
   updated: {
-    type: String
-  }
+    type: String,
+  },
 });
 const tabunganSchema = new Schema({
   sender: {
     type: String,
-    required: true
+    required: true,
   },
   nominal: {
     type: Number,
-    required: true
+    required: true,
+  },
+  tabungantype: {
+    type: String,
+    required: true,
   },
   accepted: { type: String },
   description: { type: String },
   receipt: { type: String },
   receiptname: { type: String },
   created: { type: Number },
-  updated: { type: Number }
+  updated: { type: Number },
 });
 userSchema.statics.build = (attr: IUser) => {
   return new User(attr);

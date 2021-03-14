@@ -55,22 +55,22 @@ const getExpectedmessage = (expected: any, type: any, got: any) => {
  * @returns validationRresult
  */
 async function validate(
-  req: Request,
+  req: any,
   data: Array<validationField>
 ): Promise<validationResult> {
   //get method
-  let request =
-    req.method == "POST"
-      ? req.body
-      : req.method == "GET"
-      ? req.query
-      : req.params;
+  let request = req;
+  // req.method == "POST"
+  //   ? req.body
+  //   : req.method == "GET"
+  //   ? req.query
+  //   : req.params;
   //message while validation not valid
   let messages: Array<string> = [];
 
   //check request
   if (typeof request != "undefined") {
-    data.map(item => {
+    data.map((item) => {
       const data: any = request[item.field] ? request[item.field] : null;
       if (item.required) {
         if (data) {
