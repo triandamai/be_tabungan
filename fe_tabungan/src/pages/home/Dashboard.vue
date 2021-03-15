@@ -26,7 +26,7 @@
     </div>
     <h1 class="text-white">Transaksi</h1>
     <no-data v-if="TabunganState.tabungans.length < 1" />
-    <div v-else>
+    <div v-else class="pb-20">
       <card-transaction
         v-for="(item, index) in TabunganState.tabungans"
         :key="index"

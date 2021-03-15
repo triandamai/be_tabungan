@@ -1,4 +1,5 @@
 import { reactive } from "@vue/reactivity";
+import { useRouter } from "vue-router";
 import { getCurrentUser } from "../services/FirebaseServices";
 import apiServices from "../services/Services";
 
@@ -29,6 +30,16 @@ interface IFormTabungan {
   filename: string;
   tabungantype: string;
 }
+interface IProcessTabungan {
+  isLoading: boolean;
+  isResultDialog: boolean;
+  dialogType: "success" | "failed" | "loading";
+}
+const ProcessTabunganState = reactive<IProcessTabungan>({
+  isLoading: false,
+  isResultDialog: false,
+  dialogType: "loading",
+});
 const TabunganState = reactive<ITabunganState>({
   isLoading: false,
   tabungans: [],
@@ -44,12 +55,66 @@ const TabunganState = reactive<ITabunganState>({
 });
 
 function useTabungan() {
+  /**
+   * var
+   */
+  const router = useRouter();
+  /**
+   * action routing
+   */
+  function gotoHome() {
+    router.push({ path: "/main/dashboard" });
+  }
+  /**
+   * utility
+   * dialog,move route etc
+   */
+  function showLoading() {
+    ProcessTabunganState.isLoading = true;
+    ProcessTabunganState.isResultDialog = false;
+  }
+  function hideLoading() {
+    ProcessTabunganState.isLoading = false;
+  }
+
+  function showSuccess() {
+    ProcessTabunganState.isLoading = false;
+    ProcessTabunganState.isResultDialog = true;
+    ProcessTabunganState.dialogType = "success";
+  }
+  function showFailed() {
+    ProcessTabunganState.isLoading = false;
+    ProcessTabunganState.isResultDialog = true;
+    ProcessTabunganState.dialogType = "failed";
+  }
+  function dismiss() {
+    ProcessTabunganState.isResultDialog = false;
+  }
+  function isDialogSuccess() {
+    return ProcessTabunganState.dialogType == "success";
+  }
+  function isLoading() {
+    return ProcessTabunganState.isLoading;
+  }
+  function isDialogResult() {
+    return ProcessTabunganState.isResultDialog;
+  }
+  function resetForm() {
+    TabunganState.formtabungan.description = "";
+    TabunganState.formtabungan.filename = "";
+    TabunganState.formtabungan.nominal = "";
+    TabunganState.formtabungan.receiptname = "Pilih file";
+    TabunganState.formtabungan.receipt = null;
+  }
+  /**
+   * manipulate data
+   * send data,retrieve data,accept data etc
+   */
   async function getAllDeposit() {
     const { success, data } = await apiServices.get({ path: "/api/deposits" });
 
     if (success) {
       if (data) {
-        console.log(data);
         TabunganState.tabungans = data.data;
       }
     }
@@ -61,31 +126,35 @@ function useTabungan() {
     if (success) if (data) TabunganState.amountDeposit = data?.data[0].total;
   }
   async function sendDeposit() {
-    console.log("send");
     if (
       !TabunganState.formtabungan.nominal &&
       !TabunganState.formtabungan.description &&
       !TabunganState.formtabungan.receipt
     )
       return;
-
-    console.log("kosogn");
+    showLoading();
     const fromData = new FormData();
     const user: any = await getCurrentUser();
-    console.log(TabunganState.formtabungan.receipt);
+
     fromData.append("sender", user.uid);
     fromData.append("nominal", TabunganState.formtabungan.nominal);
     fromData.append("description", TabunganState.formtabungan.description);
     fromData.append("receipt", TabunganState.formtabungan.receipt);
     fromData.append("tabungantype", "deposit");
+    hideLoading();
 
     const { success, data } = await apiServices.post({
       path: "/api/deposit/add",
       body: fromData,
       type: "form-data",
     });
+
     if (success) {
-      TabunganState.tabungans.push(data?.data[0]);
+      showSuccess();
+      resetForm();
+    } else {
+      ProcessTabunganState.dialogType = "failed";
+      showFailed();
     }
   }
   function acceptDeposit() {}
@@ -105,7 +174,16 @@ function useTabungan() {
     acceptSpending,
     getCountDeposit,
     onImagePicked,
+    showFailed,
+    showSuccess,
+    showLoading,
+    dismiss,
+    isDialogSuccess,
+    isLoading,
+    isDialogResult,
+    gotoHome,
     TabunganState,
+    ProcessTabunganState,
   };
 }
 

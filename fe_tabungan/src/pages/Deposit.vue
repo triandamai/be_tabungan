@@ -153,6 +153,7 @@
               </button>
             </form>
             <button
+              @click="gotoHome()"
               class="block border-gray-500 border-1 w-full px-4 py-3 mt-9 font-medium text-xl text-white transition duration-500 ease-in-out transform rounded-xl hover:bg-gray-800 hover:to-black focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2"
             >
               Ga Jadi Ah
@@ -161,7 +162,7 @@
             <p class="mt-8 text-center text-sm" style="color: #737182">
               Masih bingung ?
               <a
-                href="#"
+                href="https://api.whatsapp.com/send?phone=6281226809435"
                 class="font-medium hover:underline"
                 style="color: #2ec49c"
                 >Tanya pembuatnya</a
@@ -171,13 +172,59 @@
         </div>
       </div>
     </div>
+    <base-dialog
+      :show="isLoading()"
+      :dissmisable="false"
+      @onDismis="hideLoading()"
+      ><dialog-loading
+    /></base-dialog>
+    <base-dialog
+      :show="isDialogResult()"
+      :dissmisable="true"
+      @onDismis="dismiss()"
+    >
+      <dialog-result
+        v-if="isDialogSuccess()"
+        :title="'Yeeey...'"
+        :message="' Bagus! kamu berhasil nabung nih,mau nabung lagi ?'"
+        :positive="'Oke nabung lagi'"
+        :negative="'Engga Besok lagi'"
+        @onPositive="dismiss()"
+        @onNegative="gotoHome()"
+        ><div>
+          <icon-success /></div
+      ></dialog-result>
+      <dialog-result
+        v-else
+        :title="'Yaah..'"
+        :message="'Gagal simpan tabugan nih..Hal kaya gini normal sih bisanya si server lagi cape..'"
+        :positive="'Oke Coba lagi'"
+        :negative="'Yaudah kembali'"
+        @onPositive="dismiss()"
+        @onNegative="gotoHome()"
+        ><div>
+          <icon-failed /></div
+      ></dialog-result>
+    </base-dialog>
   </section>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useTabungan } from "../data/TabunganState";
 
+import BaseDialog from "../components/DialogBase.vue";
+import DialogResult from "../components/DialogResult.vue";
+import IconSuccess from "../components/icon/Transfer.vue";
+import IconFailed from "../components/icon/NotFound.vue";
+import DialogLoading from "../components/DialogLoading.vue";
 export default defineComponent({
+  components: {
+    BaseDialog,
+    DialogResult,
+    DialogLoading,
+    IconSuccess,
+    IconFailed,
+  },
   setup() {
     return {
       ...useTabungan(),
