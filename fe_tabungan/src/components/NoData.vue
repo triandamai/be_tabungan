@@ -18,22 +18,21 @@
         />
         <div class="text-center w-full">
           <h1 class="text-3xl text-white mb-3 font-semibold tracking-wide">
-            Belum ada apapun disini
+            {{ props.title }}
           </h1>
           <p
             class="lg-show-empty-3-2 mb-12 text-base tracking-wide leading-7"
             style="color: #504f5e"
           >
-            Karena belum nabung sepesrpun<br />
-            yuk mulai nabung dari sekarang
+            {{ props.text }}
           </p>
 
           <div class="flex justify-center">
             <router-link
-              to="/deposit"
+              :to="props.link"
               class="btn-empty-3-2 inline-flex font-semibold text-white text-lg leading-7 py-4 px-8 rounded-xl focus:outline-none hover:shadow-lg"
             >
-              Oke, Nabung ah
+              {{ props.button }}
             </router-link>
           </div>
         </div>
@@ -41,3 +40,32 @@
     </div>
   </section>
 </template>
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  emits: {
+    onButton: (payload: any) => {
+      return payload;
+    },
+  },
+  props: {
+    title: { type: String, default: "hai" },
+    text: { type: String, default: "wllw" },
+    button: { type: String, default: "Oke" },
+    link: {
+      type: String,
+      default: "/main/dashboard",
+    },
+  },
+  setup(props, { emit }) {
+    function onButtonClicked() {
+      emit("onButton", true);
+    }
+    return {
+      props,
+      onButtonClicked,
+    };
+  },
+});
+</script>

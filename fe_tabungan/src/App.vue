@@ -1,5 +1,17 @@
 <template>
-  <router-view />
+  <router-view v-slot="{ Component }">
+    <transition
+      enter-active-class="transition ease-out duration-300 transform"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition ease-in duration-300 transform"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
+      name="fade"
+    >
+      <component :is="Component" />
+    </transition>
+  </router-view>
 </template>
 
 <script lang="ts">

@@ -54,7 +54,7 @@ class TabunganController {
    * @returns
    */
   async acceptDeposit(req: Request, res: Response) {
-    const { isValid, invalidMessages } = await validate(req, [
+    const { isValid, invalidMessages } = await validate(req.body, [
       { field: "uid", type: "string", required: true },
       { field: "id", type: "string", required: true },
     ]);
@@ -154,8 +154,17 @@ class TabunganController {
    * @returns
    */
   async getById(req: Request, res: Response) {
-    const tabungan = await Tabungan.findById(req.params.id);
-    return send.success(res, { code: 200, data: tabungan, message: "Oke" });
+    if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      // Yes, it's a valid ObjectId, proceed with `findById` call.
+      const tabungan = await Tabungan.findOne({ _id: req.params.id });
+      if (tabungan)
+        return send.success(res, {
+          code: 200,
+          data: [tabungan],
+          message: "Oke",
+        });
+      else return send.failed(res, { code: 400, data: [], message: "not oke" });
+    } else return send.failed(res, { code: 400, data: [], message: "not oke" });
   }
   /**
    *

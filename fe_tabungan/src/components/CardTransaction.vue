@@ -27,18 +27,20 @@
       </svg>
     </div>
     <div class="mx-2">
-      <h1
+      <a
+        @click="toDetail"
         class="font-medium"
         :class="props.tabungan.accepted ? ' text-green-600' : 'text-yellow-600'"
       >
         {{ format(props.tabungan.nominal, "Rp") }}
-      </h1>
+      </a>
       <p class="text-white">{{ props.tabungan.description }}</p>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 import { useCurrency } from "../common/Currency";
 export default defineComponent({
@@ -48,12 +50,14 @@ export default defineComponent({
     },
   },
   setup(props) {
-    onMounted(() => {
-      //console.log(props.tabungan);
-    });
+    const router = useRouter();
+    function toDetail() {
+      router.push({ path: `/detail/${props.tabungan?._id}` });
+    }
     return {
       props,
       ...useCurrency(),
+      toDetail,
     };
   },
 });

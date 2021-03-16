@@ -62,8 +62,7 @@ function useUser() {
     UserState.isProgressing = true;
     const router = useRouter();
     const { user, additionalUserInfo } = await auth.getRedirectResult();
-    console.log(user);
-    console.log(additionalUserInfo);
+
     UserState.isProgressing = false;
     if (user)
       if (additionalUserInfo?.isNewUser) {
@@ -93,7 +92,7 @@ function useUser() {
       const { success, data } = await apiServices.get({
         path: "/api/user/order/" + user.uid,
       });
-      console.log(data);
+      //   console.log(data);
       if (success) if (data) UserState.profil = data.data[0];
     });
   }

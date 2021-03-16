@@ -1,5 +1,5 @@
 import { reactive } from "@vue/reactivity";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { getCurrentUser } from "../services/FirebaseServices";
 import apiServices from "../services/Services";
 
@@ -59,6 +59,7 @@ function useTabungan() {
    * var
    */
   const router = useRouter();
+  const route = useRoute();
   /**
    * action routing
    */
@@ -119,6 +120,28 @@ function useTabungan() {
       }
     }
   }
+  async function getDepositById() {
+    return new Promise(async (resolve) => {
+      showLoading();
+      const { success, data } = await apiServices.get({
+        path: `/api/deposit/${route.params.id}`,
+      });
+      hideLoading();
+      if (success) {
+        if (data) {
+          if (data.data.length > 0) {
+            resolve(data.data);
+          } else {
+            resolve(null);
+          }
+        } else {
+          resolve(null);
+        }
+      } else {
+        resolve(null);
+      }
+    });
+  }
   async function getCountDeposit() {
     const { success, data } = await apiServices.get({
       path: "/api/deposit/count",
@@ -157,7 +180,20 @@ function useTabungan() {
       showFailed();
     }
   }
-  function acceptDeposit() {}
+  async function acceptDeposit(uid: any, id: any) {
+    showLoading();
+    const { success, data } = await apiServices.post({
+      path: "/api/deposit/accept",
+      body: JSON.stringify({ id: id, uid: uid }),
+      type: "json",
+    });
+    hideLoading();
+    if (success) {
+      showSuccess();
+    } else {
+      showFailed();
+    }
+  }
   function sendSpending() {}
   function acceptSpending() {}
 
@@ -182,9 +218,10 @@ function useTabungan() {
     isLoading,
     isDialogResult,
     gotoHome,
+    getDepositById,
     TabunganState,
     ProcessTabunganState,
   };
 }
 
-export { useTabungan };
+export { useTabungan, ITabungan };

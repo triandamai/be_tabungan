@@ -25,7 +25,13 @@
       </h1>
     </div>
     <h1 class="text-white">Transaksi</h1>
-    <no-data v-if="TabunganState.tabungans.length < 1" />
+    <no-data
+      v-if="TabunganState.tabungans.length < 1"
+      :title="'Belum ada apapun'"
+      :text="'karena kamu belum mulai menabung apapun yuk mulai nabung..'"
+      :button="'Mulai nabung'"
+      :link="'/deposit'"
+    />
     <div v-else class="pb-20">
       <card-transaction
         v-for="(item, index) in TabunganState.tabungans"

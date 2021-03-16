@@ -38,6 +38,11 @@ const router = createRouter({
       ],
     },
     {
+      path: "/detail/:id",
+      name: "Detail",
+      component: () => import("./pages/DetailDeposit.vue"),
+    },
+    {
       path: "/deposit",
       name: "Deposit",
       component: () => import("./pages/Deposit.vue"),

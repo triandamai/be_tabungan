@@ -30,16 +30,12 @@
             >
               {{ UserState.profil.name }}
             </h4>
-            <p
-              class="text-base leading-7 tracking-wide sm:inline-block hidden caption-content-3-3"
-            >
-              We have provided highly experienced mentors<br />
-              for several years.
-            </p>
+
             <p
               class="text-base leading-7 tracking-wide inline-block sm:hidden caption-content-3-3"
             >
-              We have provided highly experienced mentors for several years.
+              Tau nggak ? nama kamu keren loh<br />
+              Nama kamu berarti suatu doa yang baik.
             </p>
           </li>
           <li class="mb-8">
@@ -48,17 +44,11 @@
             >
               {{ UserState.profil.email }}
             </h4>
-            <p
-              class="text-base leading-7 tracking-wide sm:inline-block hidden caption-content-3-3"
-            >
-              Are you busy at work so it's hard to consult? don't<br />
-              worry because you can access anytime.
-            </p>
+
             <p
               class="text-base leading-7 tracking-wide inline-block sm:hidden caption-content-3-3"
             >
-              Are you busy at work so it's hard to consult? don't worry because
-              you can access anytime.
+              Email kamu bisa menghubungkan kita berdua :-)
             </p>
           </li>
         </ul>
