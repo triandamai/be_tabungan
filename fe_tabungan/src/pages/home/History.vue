@@ -31,7 +31,7 @@
   </section>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 import { useTabungan } from "../../data/TabunganState";
 import CardTransaction from "../../components/CardTransaction.vue";
 import NoData from "../../components/NoData.vue";
@@ -44,6 +44,10 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
+    const { getAllDeposit } = useTabungan();
+    onMounted(() => {
+      getAllDeposit();
+    });
     return {
       ...useTabungan(),
       router,

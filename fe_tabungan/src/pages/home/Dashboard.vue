@@ -42,7 +42,7 @@
   </section>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { defineComponent, onBeforeMount, onMounted } from "vue";
 
 import { useTabungan } from "../../data/TabunganState";
 import { useCurrency } from "../../common/Currency";
@@ -56,6 +56,10 @@ export default defineComponent({
     NoData,
   },
   setup() {
+    const { getAllDeposit } = useTabungan();
+    onMounted(() => {
+      getAllDeposit();
+    });
     return {
       ...useTabungan(),
       ...useCurrency(),
