@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import { json, urlencoded } from "body-parser";
 import { router } from "./src/router";
 import multer from "multer";
+import dotenv from "dotenv";
+dotenv.config();
 const app = express();
 
 app.use(json());
@@ -18,6 +20,6 @@ const connection = mongoose.connection;
 connection.once("open", () => {
   console.log("connection estabilished");
 });
-app.listen(4000, () => {
+app.listen(process.env.PORT || 4000, () => {
   console.log("running");
 });
