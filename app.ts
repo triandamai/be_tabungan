@@ -9,6 +9,9 @@ const app = express();
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
+app.use("*", (req, res) => {
+  res.send("hai");
+});
 app.use(router);
 
 mongoose.connect(
