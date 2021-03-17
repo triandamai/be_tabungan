@@ -7,8 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev app.ts",
     "start:ts": "ts-node app.ts",
-    "start": "node dist/app.js",
-    "postinstall": "tsc"
+    "start": "node dist/app.js"
   },
   "engines": {
     "node": "14.16.0"
