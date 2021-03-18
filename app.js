@@ -12,9 +12,6 @@ dotenv_1.default.config();
 var app = express_1.default();
 app.use(body_parser_1.json());
 app.use(body_parser_1.urlencoded({ extended: true }));
-app.use("*", function (req, res) {
-    res.send("hai");
-});
 app.use(router_1.router);
 var url = "mongodb://localhost:27017/db_tabungan";
 var url2 = "mongodb+srv://Trian:asdf1998Buka@cluster0.ewqld.gcp.mongodb.net/db_tabungan?retryWrites=true&w=majority";
