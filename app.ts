@@ -14,10 +14,14 @@ app.use("*", (req, res) => {
 });
 app.use(router);
 
-mongoose.connect(
-  "mongodb+srv://Trian:asdf1998Buka@cluster0.ewqld.gcp.mongodb.net/db_tabungan?retryWrites=true&w=majority",
-  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
-);
+const url = "mongodb://localhost:27017/db_tabungan";
+const url2 =
+  "mongodb+srv://Trian:asdf1998Buka@cluster0.ewqld.gcp.mongodb.net/db_tabungan?retryWrites=true&w=majority";
+mongoose.connect(url, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+});
 
 const connection = mongoose.connection;
 connection.once("open", () => {
