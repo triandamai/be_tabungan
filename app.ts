@@ -17,7 +17,7 @@ app.use(router);
 const url = "mongodb://localhost:27017/db_tabungan";
 const url2 =
   "mongodb+srv://Trian:asdf1998Buka@cluster0.ewqld.gcp.mongodb.net/db_tabungan?retryWrites=true&w=majority";
-mongoose.connect(url, {
+mongoose.connect(url2, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
