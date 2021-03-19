@@ -12,7 +12,6 @@ const app = express();
 app.use(
   cors({
     origin: "https://myproject-64aac.web.app",
-    exposedHeaders: ["Content-Type"],
   })
 );
 
