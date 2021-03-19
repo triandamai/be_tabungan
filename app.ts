@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import { json, urlencoded } from "body-parser";
 import { router } from "./src/router";
@@ -15,6 +15,10 @@ app.use(
     exposedHeaders: ["Content-Type"],
   })
 );
+app.use((req: Request, res: Response, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
 app.use(json());
 app.use(urlencoded({ extended: true }));
 

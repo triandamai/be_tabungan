@@ -15,6 +15,10 @@ app.use(cors_1.default({
     origin: "https://myproject-64aac.web.app",
     exposedHeaders: ["Content-Type"],
 }));
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    next();
+});
 app.use(body_parser_1.json());
 app.use(body_parser_1.urlencoded({ extended: true }));
 app.use(router_1.router);
