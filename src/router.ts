@@ -6,6 +6,7 @@ import { user } from "./Controller/UserController";
 import { tabungan } from "./Controller/TabunganController";
 import { Storage } from "./common/uploader";
 import multer from "multer";
+
 router.get("/", (req, res) => {
   res.send("hai");
 });

@@ -4,9 +4,12 @@ import { json, urlencoded } from "body-parser";
 import { router } from "./src/router";
 import multer from "multer";
 import dotenv from "dotenv";
+import cors from "cors";
+
 dotenv.config();
 const app = express();
 
+app.use(cors({ origin: "https://myproject-64aac.web.app" }));
 app.use(json());
 app.use(urlencoded({ extended: true }));
 
