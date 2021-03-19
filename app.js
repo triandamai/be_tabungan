@@ -11,7 +11,10 @@ var dotenv_1 = __importDefault(require("dotenv"));
 var cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
 var app = express_1.default();
-app.use(cors_1.default({ origin: "https://myproject-64aac.web.app" }));
+app.use(cors_1.default({
+    origin: "https://myproject-64aac.web.app",
+    exposedHeaders: ["Content-Type"],
+}));
 app.use(body_parser_1.json());
 app.use(body_parser_1.urlencoded({ extended: true }));
 app.use(router_1.router);
