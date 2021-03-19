@@ -15,13 +15,7 @@ app.use(
     exposedHeaders: ["Content-Type"],
   })
 );
-app.use((req: Request, res: Response, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "*");
 
-  res.header("Content-Type", "*");
-  next();
-});
 app.use(json());
 app.use(urlencoded({ extended: true }));
 
