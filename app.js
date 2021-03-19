@@ -17,6 +17,8 @@ app.use(cors_1.default({
 }));
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "*");
+    res.header("Content-Type", "*");
     next();
 });
 app.use(body_parser_1.json());
