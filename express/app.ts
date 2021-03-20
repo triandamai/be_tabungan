@@ -9,11 +9,11 @@ import cors from "cors";
 dotenv.config();
 const app = express();
 
-app.use(
-  cors({
-    origin: "https://myproject-64aac.web.app",
-  })
-);
+// app.use(
+//   cors({
+//     origin: "https://myproject-64aac.web.app",
+//   })
+// );
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
