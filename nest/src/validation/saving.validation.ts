@@ -1,24 +1,19 @@
 import { IsNotEmpty } from 'class-validator';
-export class CreateUserValidation {
+export class CreateSavingValidation {
   @IsNotEmpty()
-  name: string;
+  savingId: string;
   @IsNotEmpty()
-  email: string;
+  userId: string;
   @IsNotEmpty()
-  uid: string;
+  description: string;
   @IsNotEmpty()
-  gender: string;
-  @IsNotEmpty()
-  password: string;
+  createdBy: string;
 }
-export class LoginValidation {
+export class JoinSavingValidation {
   @IsNotEmpty()
-  email: string;
+  savingId: string;
   @IsNotEmpty()
-  password: string;
-}
-
-export class UIDValidation {
+  userId: string;
   @IsNotEmpty()
-  uid: string;
+  ownerId: string;
 }

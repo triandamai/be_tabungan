@@ -56,6 +56,7 @@ export const userSchema = new Schema({
  */
 
 export interface IDeposit {
+  savingId: string;
   sender: string;
   nominal: Number;
   type: string;
@@ -67,9 +68,10 @@ export interface IDeposit {
   updatedAt: Number;
 }
 export interface DepositDoc extends Document {
+  savingId: string;
   sender: string;
   nominal: Number;
-  tabungantype: string;
+  type: string;
   accepted: string;
   description: string;
   receipt: string;
@@ -79,10 +81,11 @@ export interface DepositDoc extends Document {
 }
 
 export interface depositModelInterface extends Model<DepositDoc> {
-  build(attr: ISaving): DepositDoc;
+  build(attr: IDeposit): DepositDoc;
 }
 
 export const depositSchema = new Schema({
+  savingId: { type: String, required: true },
   sender: {
     type: String,
     required: true,
@@ -91,7 +94,7 @@ export const depositSchema = new Schema({
     type: Number,
     required: true,
   },
-  tabungantype: {
+  type: {
     type: String,
     required: true,
   },
@@ -131,7 +134,7 @@ export const savingSchema = new Schema({
     required: true,
   },
   userId: {
-    type: Number,
+    type: String,
     required: true,
   },
   description: {

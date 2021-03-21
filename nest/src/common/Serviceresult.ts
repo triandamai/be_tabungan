@@ -1,5 +1,5 @@
 export interface ServiceResult {
   success: boolean;
-  payload?: any;
+  payload?: any[];
   reason?: any;
 }

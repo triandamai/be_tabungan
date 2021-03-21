@@ -5,6 +5,8 @@ import {
   UserDoc,
   userModelInterface,
   IUser,
+  savingModelInterface,
+  depositModelInterface,
 } from 'src/database/schemas/database.schema';
 import {
   CreateUserValidation,
@@ -13,29 +15,67 @@ import {
 
 @Injectable()
 export class UserService {
-  constructor(@Inject('USER_MODEL') private userModel: userModelInterface) {}
+  constructor(
+    @Inject('USER_MODEL') private userModel: userModelInterface,
+    @Inject('SAVING_MODEL') private savingModel: savingModelInterface,
+    @Inject('DEPOSIT_MODEL') private depositModel: depositModelInterface,
+  ) {}
 
   findAll(): Promise<UserDoc[]> {
     return this.userModel.find().exec();
   }
+  getProfil(uid: string): Promise<ServiceResult> {
+    return new Promise(async (resolve) => {
+      const user = await this.userModel.findOne({ uid: uid });
 
-  findOne(id: any) {
-    return this.userModel.findById(id);
-  }
-
-  findByUid(uid: any) {
-    return this.userModel.find({ uid: uid });
+      if (!user) {
+        resolve({
+          success: false,
+          payload: [],
+          reason: `Failed ${user}`,
+        });
+      } else {
+        const saving = await this.savingModel.findOne({ userId: user.uid });
+        const count = await this.depositModel.aggregate([
+          {
+            $match: {
+              savingId: saving.savingId,
+            },
+          },
+          {
+            $group: {
+              _id: null,
+              savingId: {
+                $first: '$savingId',
+              },
+              total: {
+                $sum: '$nominal',
+              },
+            },
+          },
+        ]);
+        return resolve({
+          success: true,
+          payload: [
+            {
+              user: user,
+              saving: saving,
+              count: count,
+            },
+          ],
+        });
+      }
+    });
   }
   login(user: LoginValidation): Promise<ServiceResult> {
     return new Promise(async (resolve) => {
-      const data = await this.userModel.find({
+      const data = await this.userModel.findOne({
         email: user.email,
         password: user.password,
       });
 
-      if (data.length > 0)
-        resolve({ success: true, payload: data, reason: 'Ok' });
-      else resolve({ success: false });
+      if (data) resolve({ success: true, payload: [data], reason: 'Ok' });
+      else resolve({ success: false, payload: [], reason: 'Failed' });
     });
   }
   create(createUserDto: CreateUserValidation): Promise<ServiceResult> {
@@ -50,15 +90,14 @@ export class UserService {
         updatedAt: Date.now(),
       });
       const saved = await model.save();
-      if (saved) resolve({ success: true, payload: saved, reason: 'Success' });
-      else resolve({ success: false });
+      if (saved)
+        resolve({ success: true, payload: [saved], reason: 'Success' });
+      else
+        resolve({
+          success: false,
+          payload: [],
+          reason: `Failed ${saved.errors}`,
+        });
     });
-  }
-  update(id: any, updateUserDto: IUser) {
-    return {};
-  }
-
-  remove(id: any) {
-    return this.userModel.findByIdAndRemove(id);
   }
 }
