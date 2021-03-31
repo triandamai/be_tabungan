@@ -13,8 +13,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install dep
         run: npm ci && npm run build
-      - name: deploy functions
-        uses: BIGG-Kaymo/deploy-firebase-functions@v1.0.1
       - name: deploy hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
