@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install dep
-        run: npm --prefix ./server ci && npm npm --prefix ./server run build
+        run: npm --prefix ./server ci && npm --prefix ./server run build
       - name: deploy hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
