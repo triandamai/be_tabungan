@@ -56,7 +56,7 @@ export class DepositController {
     else return { statusCode: 400, data: [], message: reason };
   }
 
-  @Post('confirmation:id')
+  @Post('confirmation/:id')
   async confirmation(
     @Param('id') id: any,
     @Body() user: ConfirmationDepositValidation,
