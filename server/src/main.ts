@@ -6,10 +6,10 @@ import { ExpressAdapter } from '@nestjs/platform-express';
 declare const module: any;
 import * as express from 'express';
 import { Express } from 'express';
-import cors from 'cors';
+import * as cors from 'cors';
 import * as functions from 'firebase-functions';
 
-const whitelist = ['https://tabungan.trian.app', 'https://tabungan.trian.app'];
+const whitelist = ['https://tabungan.trian.app', 'http://tabungan.trian.app'];
 const server: Express = express();
 
 async function bootstrap(expressInstance: Express) {

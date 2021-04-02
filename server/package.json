@@ -32,6 +32,7 @@
     "@nestjs/serve-static": "^2.1.4",
     "@types/cors": "^2.8.10",
     "aws-sdk": "^2.868.0",
+    "build": "^0.1.4",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "cors": "^2.8.5",
@@ -43,6 +44,7 @@
     "multer-s3": "^2.9.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
+    "run": "^1.4.0",
     "rxjs": "^6.6.6"
   },
   "devDependencies": {
